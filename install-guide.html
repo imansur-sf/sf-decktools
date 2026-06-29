@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SF Decktools — Install Guide</title>
+  <link rel="stylesheet" href="tokens.css" />
+  <link rel="stylesheet" href="components.css" />
+  <style>
+    :root { --accent: #04E1CB; --accent-l: #06A59A; }
+
+    * { box-sizing: border-box; }
+    body { background: var(--white); color: var(--text); }
+
+    /* ── Page layout ── */
+    .page-wrap { max-width: 860px; margin: 0 auto; padding: 0 40px 80px; }
+
+    /* ── Hero ── */
+    .guide-hero {
+      background: var(--grad-evening);
+      padding: 72px 40px 64px;
+      position: relative;
+      overflow: hidden;
+    }
+    .guide-hero::after {
+      content: '';
+      position: absolute; bottom: 0; left: 0; right: 100%;
+      height: 3px; background: var(--accent);
+      animation: accent-line 1.2s cubic-bezier(0.4,0,0.2,1) 0.2s forwards;
+    }
+    @keyframes accent-line { to { right: 0; } }
+
+    .guide-hero-inner { max-width: 860px; margin: 0 auto; }
+    .guide-eyebrow {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--sf-blue-l); margin-bottom: 18px;
+    }
+    .guide-eyebrow::before {
+      content: ''; width: 20px; height: 2px;
+      background: var(--accent); border-radius: 2px;
+    }
+    .guide-hero h1 {
+      font-size: clamp(28px, 3vw, 42px);
+      font-weight: 700; line-height: 1.1; letter-spacing: -0.025em;
+      color: var(--white); margin: 0 0 16px;
+    }
+    .guide-hero h1 em { font-style: normal; color: var(--sf-blue-l); }
+    .guide-hero p {
+      font-size: 16px; color: rgba(255,255,255,0.75); line-height: 1.6;
+      max-width: 620px; margin: 0;
+    }
+    .guide-chips { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 28px; }
+    .chip {
+      display: inline-flex; align-items: center; gap: 5px;
+      font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+      padding: 5px 12px; border-radius: 999px;
+      background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.8);
+      border: 1px solid rgba(255,255,255,0.15);
+    }
+
+    /* ── Section titles ── */
+    .section { padding: 56px 0 0; }
+    .section-eyebrow {
+      font-size: 10px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--sf-blue-m); margin-bottom: 8px;
+    }
+    .section h2 {
+      font-size: 24px; font-weight: 700; color: var(--sf-navy);
+      margin: 0 0 28px; letter-spacing: -0.02em;
+    }
+
+    /* ── What is it ── */
+    .what-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;
+      margin-top: 4px;
+    }
+    .what-card {
+      background: var(--off-white); border-radius: 12px; padding: 24px 20px;
+      border: 1px solid var(--gray-200);
+    }
+    .what-icon {
+      width: 40px; height: 40px; border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 14px; font-size: 20px;
+    }
+    .what-card h3 { font-size: 14px; font-weight: 700; color: var(--sf-navy); margin: 0 0 6px; }
+    .what-card p { font-size: 13px; color: var(--body); line-height: 1.55; margin: 0; }
+
+    /* ── Prerequisites ── */
+    .prereq-list {
+      display: flex; flex-direction: column; gap: 10px;
+      margin: 0; padding: 0; list-style: none;
+    }
+    .prereq-item {
+      display: flex; align-items: center; gap: 14px;
+      padding: 14px 18px; border-radius: 10px;
+      background: var(--off-white); border: 1px solid var(--gray-200);
+    }
+    .prereq-badge {
+      flex-shrink: 0;
+      width: 28px; height: 28px; border-radius: 50%;
+      background: var(--sf-blue); color: #fff;
+      font-size: 12px; font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .prereq-item strong { font-size: 13px; color: var(--sf-navy); }
+    .prereq-item span { font-size: 12px; color: var(--muted); }
+    .prereq-item .prereq-text { display: flex; flex-direction: column; gap: 1px; }
+
+    /* ── Install steps ── */
+    .install-steps { display: flex; flex-direction: column; gap: 16px; margin-top: 4px; }
+    .step {
+      display: grid; grid-template-columns: 44px 1fr; gap: 16px; align-items: start;
+    }
+    .step-num {
+      width: 44px; height: 44px; border-radius: 50%;
+      background: var(--sf-navy); color: #fff;
+      font-size: 16px; font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; margin-top: 2px;
+    }
+    .step-body h3 { font-size: 15px; font-weight: 700; color: var(--sf-navy); margin: 0 0 4px; }
+    .step-body p { font-size: 13px; color: var(--body); line-height: 1.55; margin: 0 0 10px; }
+    .step-body p:last-child { margin-bottom: 0; }
+
+    /* ── Code blocks ── */
+    .code-block {
+      background: var(--sf-navy);
+      border-radius: 8px; padding: 14px 18px;
+      font-family: 'SF Mono', 'Fira Mono', 'Consolas', monospace;
+      font-size: 13px; color: var(--sf-blue-l);
+      overflow-x: auto; position: relative;
+      margin: 8px 0 0;
+    }
+    .code-block .comment { color: rgba(255,255,255,0.3); }
+    .code-block .cmd { color: #fff; }
+    .code-block .flag { color: var(--accent); }
+    .code-copy {
+      position: absolute; top: 10px; right: 12px;
+      background: rgba(255,255,255,0.1); border: none; border-radius: 5px;
+      color: rgba(255,255,255,0.6); font-size: 10px; font-weight: 600;
+      padding: 3px 8px; cursor: pointer; letter-spacing: 0.05em;
+      transition: background 0.15s, color 0.15s;
+    }
+    .code-copy:hover { background: rgba(255,255,255,0.2); color: #fff; }
+
+    /* ── Divider ── */
+    hr.div { border: none; border-top: 1px solid var(--gray-200); margin: 48px 0 0; }
+
+    /* ── File map ── */
+    .file-table { width: 100%; border-collapse: collapse; margin-top: 4px; }
+    .file-table th {
+      font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--muted); padding: 8px 12px; text-align: left;
+      border-bottom: 2px solid var(--gray-200);
+    }
+    .file-table td {
+      font-size: 13px; padding: 10px 12px; border-bottom: 1px solid var(--gray-200);
+      vertical-align: top;
+    }
+    .file-table tr:last-child td { border-bottom: none; }
+    .file-table .fname {
+      font-family: 'SF Mono', 'Fira Mono', monospace;
+      font-size: 12px; color: var(--sf-blue); font-weight: 600;
+      white-space: nowrap;
+    }
+    .file-table .fdesc { color: var(--body); }
+    .file-table .freq {
+      font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+      padding: 3px 8px; border-radius: 999px;
+    }
+    .req-required { background: #EFF6FF; color: var(--sf-blue); }
+    .req-optional { background: var(--off-white); color: var(--muted); }
+
+    /* ── Workflow ── */
+    .workflow-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 4px; }
+    .workflow-card {
+      border-radius: 12px; border: 1px solid var(--gray-200);
+      padding: 22px 20px; background: var(--white);
+    }
+    .workflow-card.highlight {
+      background: linear-gradient(135deg, #EFF6FF, #EAF5FE);
+      border-color: var(--sf-blue-l);
+    }
+    .workflow-card h3 {
+      font-size: 13px; font-weight: 700; color: var(--sf-navy);
+      margin: 0 0 10px; letter-spacing: 0.01em;
+    }
+    .workflow-card ol, .workflow-card ul {
+      margin: 0; padding-left: 18px;
+    }
+    .workflow-card li { font-size: 13px; color: var(--body); line-height: 1.6; margin-bottom: 2px; }
+
+    /* ── Feedback widget callout ── */
+    .widget-callout {
+      background: linear-gradient(135deg, #EFF6FF 0%, #F0FDF9 100%);
+      border: 1.5px solid var(--sf-blue-l);
+      border-radius: 14px; padding: 28px 28px 24px;
+      margin-top: 4px;
+    }
+    .widget-callout h3 { font-size: 16px; font-weight: 700; color: var(--sf-navy); margin: 0 0 8px; }
+    .widget-callout p { font-size: 13px; color: var(--body); line-height: 1.6; margin: 0 0 16px; }
+    .widget-steps { display: flex; flex-direction: column; gap: 8px; }
+    .widget-step {
+      display: flex; gap: 12px; align-items: flex-start;
+    }
+    .ws-num {
+      flex-shrink: 0; width: 22px; height: 22px; border-radius: 50%;
+      background: var(--sf-blue-m); color: #fff;
+      font-size: 11px; font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
+      margin-top: 1px;
+    }
+    .ws-text { font-size: 13px; color: var(--body); line-height: 1.55; }
+    .ws-text strong { color: var(--sf-navy); }
+
+    /* ── Update flow ── */
+    .update-box {
+      background: var(--sf-navy); border-radius: 12px;
+      padding: 24px 24px 20px; margin-top: 4px;
+      color: rgba(255,255,255,0.85);
+    }
+    .update-box h3 { font-size: 14px; font-weight: 700; color: #fff; margin: 0 0 10px; }
+    .update-box p { font-size: 13px; line-height: 1.6; margin: 0 0 12px; }
+    .update-box p:last-child { margin-bottom: 0; }
+
+    /* ── Closing ── */
+    .closing-band {
+      background: var(--grad-evening);
+      border-radius: 16px; padding: 40px 36px;
+      margin-top: 48px;
+      text-align: center;
+    }
+    .closing-band h2 { font-size: 22px; font-weight: 700; color: #fff; margin: 0 0 10px; }
+    .closing-band p { font-size: 14px; color: rgba(255,255,255,0.7); margin: 0 0 24px; line-height: 1.6; }
+    .closing-steps { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+    .c-step {
+      background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 10px; padding: 14px 20px; min-width: 160px;
+    }
+    .c-step.primary { background: var(--sf-blue-m); border-color: var(--sf-blue-m); }
+    .c-step .cs-num { font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.5); margin-bottom: 4px; }
+    .c-step .cs-text { font-size: 13px; font-weight: 700; color: #fff; }
+
+    @media (max-width: 640px) {
+      .what-grid { grid-template-columns: 1fr; }
+      .workflow-cards { grid-template-columns: 1fr; }
+      .closing-steps { flex-direction: column; align-items: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HERO -->
+  <div class="guide-hero">
+    <div class="guide-hero-inner">
+      <div class="guide-eyebrow">SF Decktools · Install Guide</div>
+      <h1>Build Salesforce customer decks<br/><em>in minutes, not days.</em></h1>
+      <p>SF Decktools is a complete design system for building narrative-driven HTML decks — built on the official 2026 Salesforce brand guidelines. One command installs everything into Claude Code, and it enforces the rules for you automatically.</p>
+      <p style="margin-top:14px;font-size:14px;color:rgba(255,255,255,0.65);">You're reading the hosted version — <a href="https://mtoolin-sf.github.io/sf-decktools/install-guide.html" target="_blank" rel="noopener" style="color:var(--accent);font-weight:700;text-decoration:underline;text-underline-offset:3px;">open the full rendered guide</a> to see fonts, animations, and all examples.</p>
+      <div class="guide-chips">
+        <span class="chip">Salesforce Brand 2026</span>
+        <span class="chip">Claude Code Skill</span>
+        <span class="chip">Async Review Widget</span>
+        <span class="chip">No Build Step</span>
+        <span class="chip">Chrome + Edge</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="page-wrap">
+
+    <!-- WHAT IS IT -->
+    <div class="section">
+      <div class="section-eyebrow">What you get</div>
+      <h2>Three things that work together</h2>
+      <div class="what-grid">
+        <div class="what-card">
+          <div class="what-icon" style="background:#EFF6FF;">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#022AC0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M3 9h18M9 21V9"/></svg>
+          </div>
+          <h3>Design System</h3>
+          <p>Tokens, components, fonts, icons, and brand rules — all correct, all ready. Drop them into any deck with two `&lt;link&gt;` tags.</p>
+        </div>
+        <div class="what-card">
+          <div class="what-icon" style="background:#F0FDF9;">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#06A59A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+          </div>
+          <h3>Claude Skill</h3>
+          <p>Installs into Claude Code with one command. Automatically loads every brand rule before touching any deck — you never have to describe the system manually.</p>
+        </div>
+        <div class="what-card">
+          <div class="what-icon" style="background:#EAF5FE;">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#066AFE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          </div>
+          <h3>Feedback Widget</h3>
+          <p>Every deck ships with an async review widget. Reviewers leave comments per slide — like Google Slides — and Claude reads the output to apply changes automatically.</p>
+        </div>
+      </div>
+    </div>
+
+    <hr class="div" />
+
+    <!-- PREREQUISITES -->
+    <div class="section">
+      <div class="section-eyebrow">Before you start</div>
+      <h2>Prerequisites</h2>
+      <ul class="prereq-list">
+        <li class="prereq-item">
+          <div class="prereq-badge">1</div>
+          <div class="prereq-text">
+            <strong>Claude Code CLI installed</strong>
+            <span>Install from <a href="https://claude.ai/code" target="_blank" rel="noopener" style="color:var(--sf-blue);">claude.ai/code</a> or run <code>npm i -g @anthropic-ai/claude-code</code> in your terminal. Requires an Anthropic account.</span>
+          </div>
+        </li>
+        <li class="prereq-item">
+          <div class="prereq-badge">2</div>
+          <div class="prereq-text">
+            <strong>Git <em style="font-style:normal;font-weight:400;color:var(--muted);">(or ZIP download — see step 1)</em></strong>
+            <span>Git is used by <code>claude skills install</code> to pull the repo automatically. If you don't have Git, you can download a ZIP instead — instructions in step 1 below. To check: open Terminal and type <code>git --version</code>. If it's not installed, macOS will prompt you to install Xcode Command Line Tools — click Install and wait ~2 minutes.</span>
+          </div>
+        </li>
+        <li class="prereq-item">
+          <div class="prereq-badge">3</div>
+          <div class="prereq-text">
+            <strong>Chrome or Edge browser</strong>
+            <span>Required for the feedback widget's per-slide review feature. Firefox works for presenting but cannot save the review file locally. Safari is not supported for review.</span>
+          </div>
+        </li>
+      </ul>
+    </div>
+
+    <hr class="div" />
+
+    <!-- INSTALL -->
+    <div class="section">
+      <div class="section-eyebrow">Installation</div>
+      <h2>Get up and running in 3 steps</h2>
+      <div class="install-steps">
+
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-body">
+            <h3>Install the Claude skill</h3>
+            <p>Run this in your terminal. It pulls the full decktools repo into <code>~/claude/decktools</code> and registers the skill globally in Claude Code.</p>
+            <div class="code-block">
+              <button class="code-copy" onclick="copyCode(this, 'claude skills install github.com/mtoolin-sf/sf-decktools')">COPY</button>
+              <span class="cmd">claude skills install github.com/mtoolin-sf/sf-decktools</span>
+            </div>
+            <div style="margin-top:12px;padding:14px 18px;border-radius:8px;background:#FFF9E6;border:1px solid #F5D87A;">
+              <p style="font-size:12px;color:#7A5C00;margin:0 0 6px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;">No Git? Use the ZIP instead</p>
+              <p style="font-size:12px;color:#4A3800;margin:0;line-height:1.6;">Download the repo as a ZIP from GitHub, unzip it to <code style="color:var(--sf-blue);background:#FFF3CC;padding:1px 4px;border-radius:3px;">~/claude/decktools</code>, then run <code style="color:var(--sf-blue);background:#FFF3CC;padding:1px 4px;border-radius:3px;">claude skills install ~/claude/decktools</code> pointing at the local folder. Claude Code will register it the same way.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-body">
+            <h3>Open Claude Code in the decktools folder</h3>
+            <p>All deck files live here. When the skill is active, Claude automatically reads the brand rules and component library from this folder — you never have to describe the system yourself.</p>
+            <div class="code-block">
+              <button class="code-copy" onclick="copyCode(this, 'cd ~/claude/decktools && claude')">COPY</button>
+              <span class="cmd">cd ~/claude/decktools <span class="comment">&amp;&amp;</span> claude</span>
+            </div>
+            <p style="margin-top:10px;">You can also open Claude Code from your applications launcher and use <code>/cd</code> or open a new session pointed at the folder from the Claude Code UI.</p>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-body">
+            <h3>Preview the canonical example</h3>
+            <p>Before building anything, open <code>sf-composer.html</code> directly in Chrome — it's a fully rendered 12-slide reference deck showing every component, animation, and copy pattern. No server needed; just open the file.</p>
+            <div class="code-block">
+              <button class="code-copy" onclick="copyCode(this, 'open ~/claude/decktools/sf-composer.html')">COPY</button>
+              <span class="cmd">open ~/claude/decktools/sf-composer.html</span>
+            </div>
+            <p style="margin-top:10px;">On Windows: right-click the file in Explorer and choose <strong>Open with Chrome</strong>.</p>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-num">4</div>
+          <div class="step-body">
+            <h3>Build your first deck</h3>
+            <p>Back in Claude Code, run the skill. It loads every brand rule automatically, then asks you a set of questions to scaffold the full deck.</p>
+            <div class="code-block">
+              <button class="code-copy" onclick="copyCode(this, '/decktools new')">COPY</button>
+              <span class="cmd">/decktools new</span>
+            </div>
+            <p style="margin-top:10px;">Claude will ask: customer name, their primary color, story arc, two or three KPI numbers, and the use cases to feature. Answer those — it builds the full HTML file.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <hr class="div" />
+
+    <!-- FILE MAP -->
+    <div class="section">
+      <div class="section-eyebrow">What's in the repo</div>
+      <h2>Key files</h2>
+      <table class="file-table">
+        <thead>
+          <tr>
+            <th>File</th>
+            <th>What it does</th>
+            <th>Use it</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="fname">tokens.css</td>
+            <td class="fdesc">All design tokens — colors, spacing, typography, gradients. Source of truth for the 2026 Salesforce brand palette.</td>
+            <td><span class="freq req-required">Required</span></td>
+          </tr>
+          <tr>
+            <td class="fname">components.css</td>
+            <td class="fdesc">Every reusable component class — nav, hero, cards, proof stats, closing. Never write custom layout CSS when a component exists here.</td>
+            <td><span class="freq req-required">Required</span></td>
+          </tr>
+          <tr>
+            <td class="fname">sf-composer.html</td>
+            <td class="fdesc">The canonical 12-slide best-deck example. Read this before building anything — it's the reference for structure, animation, and copy style.</td>
+            <td><span class="freq req-required">Required</span></td>
+          </tr>
+          <tr>
+            <td class="fname">feedback-widget.js</td>
+            <td class="fdesc">Async review widget. Drop one script tag into any deck — reviewer leaves per-slide comments, Claude reads feedback.md to apply changes.</td>
+            <td><span class="freq req-required">Required</span></td>
+          </tr>
+          <tr>
+            <td class="fname">animation.js</td>
+            <td class="fdesc">Entrance animation engine. typeInto, countUp, fillBar, streamItem — all the interactive patterns.</td>
+            <td><span class="freq req-optional">Optional</span></td>
+          </tr>
+          <tr>
+            <td class="fname">STYLE-GUIDE.md</td>
+            <td class="fdesc">Full brand rules, voice guidelines, color system, persuasion framework (Bowden). Claude reads this automatically when the skill is active.</td>
+            <td><span class="freq req-optional">Reference</span></td>
+          </tr>
+          <tr>
+            <td class="fname">SLIDE-PRINCIPLES.md</td>
+            <td class="fdesc">Slide-specific rules — section order, component assignments, do/don't list. Claude reads this automatically.</td>
+            <td><span class="freq req-optional">Reference</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <hr class="div" />
+
+    <!-- WORKFLOW -->
+    <div class="section">
+      <div class="section-eyebrow">Day to day</div>
+      <h2>Two core workflows</h2>
+      <div class="workflow-cards">
+        <div class="workflow-card highlight">
+          <h3>Building a new customer deck</h3>
+          <ol>
+            <li>Open Claude Code in <code>~/claude/decktools</code></li>
+            <li>Run <code>/decktools new</code></li>
+            <li>Answer 6 questions (Claude handles the rest)</li>
+            <li>Open the generated HTML file in Chrome — no build step</li>
+            <li>Iterate with plain English: "make the hero copy more direct"</li>
+            <li>Share the file or host it — it's self-contained</li>
+          </ol>
+        </div>
+        <div class="workflow-card">
+          <h3>Editing an existing deck</h3>
+          <ol>
+            <li>Open Claude Code in <code>~/claude/decktools</code></li>
+            <li>Say: "edit mybrand.html — change the proof section"</li>
+            <li>Claude loads all style rules automatically before touching the file</li>
+            <li>Review the change in Chrome, iterate</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+
+    <hr class="div" />
+
+    <!-- FEEDBACK WIDGET -->
+    <div class="section">
+      <div class="section-eyebrow">Async review</div>
+      <h2>The feedback widget</h2>
+      <div class="widget-callout">
+        <h3>How it works — reviewer side</h3>
+        <p>Every deck built with decktools has a floating review button (bottom-right). Share the deck URL with a teammate — they open it in Chrome and leave comments directly on each slide. No Slack thread of disconnected feedback. No screen share required.</p>
+        <div class="widget-steps">
+          <div class="widget-step">
+            <div class="ws-num">1</div>
+            <div class="ws-text"><strong>Click the chat icon</strong> bottom-right to open the review panel</div>
+          </div>
+          <div class="widget-step">
+            <div class="ws-num">2</div>
+            <div class="ws-text"><strong>Enter your name once</strong> — it's remembered for the session</div>
+          </div>
+          <div class="widget-step">
+            <div class="ws-num">3</div>
+            <div class="ws-text"><strong>Navigate slides, type comments</strong> — each one is tagged to the slide automatically</div>
+          </div>
+          <div class="widget-step">
+            <div class="ws-num">4</div>
+            <div class="ws-text">On first comment, Chrome asks permission to <strong>save feedback.md</strong> to your local folder — grant it once</div>
+          </div>
+          <div class="widget-step">
+            <div class="ws-num">5</div>
+            <div class="ws-text"><strong>Click "End Review"</strong> — saves the final file and shows a summary</div>
+          </div>
+        </div>
+      </div>
+      <div style="margin-top:16px; padding:20px 22px; border-radius:12px; background:var(--off-white); border:1px solid var(--gray-200);">
+        <h3 style="font-size:14px;font-weight:700;color:var(--sf-navy);margin:0 0 8px;">Applying feedback — author side</h3>
+        <p style="font-size:13px;color:var(--body);line-height:1.6;margin:0 0 10px;">After the reviewer sends you their feedback.md, drop it in the decktools directory and tell Claude:</p>
+        <div class="code-block">
+          <button class="code-copy" onclick="copyCode(this, 'read feedback.md and apply the changes to mybrand.html')">COPY</button>
+          <span class="cmd">read feedback.md and apply the changes to mybrand.html</span>
+        </div>
+        <p style="font-size:13px;color:var(--muted);margin:10px 0 0;">Claude reads the per-slide comment threads and applies each change — copy edits, layout changes, and design notes — then reports back what it did.</p>
+      </div>
+      <div style="margin-top:12px;padding:14px 18px;border-radius:8px;background:#EFF6FF;border:1px solid #BFDBFE;">
+        <p style="font-size:12px;color:var(--sf-blue);margin:0;font-weight:600;">Presenter mode: click the <strong>screen/play icon</strong> (in the slide controls) to hide the review widget entirely during a live demo. Click again to restore review mode.</p>
+      </div>
+    </div>
+
+    <hr class="div" />
+
+    <!-- UPDATES -->
+    <div class="section">
+      <div class="section-eyebrow">Staying current</div>
+      <h2>Updates</h2>
+      <div class="update-box">
+        <h3>Auto-update prompts</h3>
+        <p>When the decktools skill is updated, Claude will tell you at the start of your next session:</p>
+        <div class="code-block" style="background:rgba(255,255,255,0.08);border-radius:6px;padding:10px 14px;margin:0 0 12px;">
+          <span style="color:rgba(255,255,255,0.5);">decktools skill v1.1 is available.</span><br/>
+          <span style="color:#fff;">Run </span><span style="color:var(--accent);">claude skills install github.com/mtoolin-sf/sf-decktools</span><span style="color:#fff;"> to update.</span>
+        </div>
+        <p>Run that command any time to pull the latest brand rules, components, and widget improvements. Your deck files are untouched — only the skill and shared CSS/JS files update.</p>
+      </div>
+    </div>
+
+    <hr class="div" />
+
+    <!-- OWNERSHIP & HOSTING -->
+    <div class="section">
+      <div class="section-eyebrow">Your deck, your responsibility</div>
+      <h2>Hosting &amp; ownership</h2>
+      <p style="font-size:14px;color:var(--body);line-height:1.6;margin:0 0 24px;max-width:660px;">Decktools gives you the design system and the skill — it does not host your decks. Every deck you build is yours to own, deploy, and share.</p>
+
+      <div class="workflow-cards">
+        <div class="workflow-card">
+          <h3>How it works</h3>
+          <p style="font-size:13px;color:var(--body);line-height:1.6;margin:0;">When you run <code>/decktools new</code>, Claude creates a repo under <strong>your</strong> GitHub account and pushes the HTML there. The decktools repo (<code>mtoolin-sf/sf-decktools</code>) is never touched — it's the source of the skill and design system only. Your deck repos are completely separate.</p>
+        </div>
+        <div class="workflow-card">
+          <h3>Hosting your deck</h3>
+          <p style="font-size:13px;color:var(--body);line-height:1.6;margin:0 0 10px;">The easiest option is GitHub Pages — it's free and serves the HTML instantly:</p>
+          <ol style="margin:0;padding-left:18px;font-size:13px;color:var(--body);line-height:1.8;">
+            <li>Go to your deck repo on GitHub → Settings → Pages</li>
+            <li>Source: <strong>Deploy from a branch</strong>, branch: <code>main</code>, folder: <code>/ (root)</code></li>
+            <li>GitHub gives you a public URL within ~60 seconds</li>
+          </ol>
+        </div>
+        <div class="workflow-card">
+          <h3>Your responsibility</h3>
+          <p style="font-size:13px;color:var(--body);line-height:1.6;margin:0;">Once pushed to your repo, you are responsible for the content, access controls, and any customer data in the deck. Set your repo to <strong>private</strong> if the deck contains confidential information, and share the GitHub Pages link only with intended recipients. Decktools has no visibility into your deck repos and cannot access or modify them.</p>
+        </div>
+      </div>
+
+      <div style="margin-top:20px;padding:14px 18px;border-radius:8px;background:#EFF6FF;border:1px solid #BFDBFE;">
+        <p style="font-size:12px;color:var(--sf-blue);margin:0;font-weight:600;">The <code>mtoolin-sf/sf-decktools</code> repo is read-only for all users. Nobody outside the maintainer can push to it — your install is a local clone on your own machine.</p>
+      </div>
+    </div>
+
+    <hr class="div" />
+
+    <!-- TELL SHOW TELL + BOWDEN -->
+    <div class="section">
+      <div class="section-eyebrow">Presentation craft</div>
+      <h2>The methodology behind the structure</h2>
+      <p style="font-size:14px;color:var(--body);line-height:1.6;margin:0 0 28px;max-width:660px;">SF Decktools enforces a narrative structure — not just a visual one. The section order (Why Now → Gap → Solution → Proof → Roadmap) is built on two well-tested frameworks used by the world's best enterprise presenters.</p>
+
+      <div class="workflow-cards" style="margin-bottom:24px;">
+        <div class="workflow-card highlight">
+          <h3>Tell — Show — Tell</h3>
+          <p style="font-size:13px;color:var(--body);line-height:1.6;margin:0 0 12px;">The single most important demo technique in B2B sales. Audiences don't absorb what they see — they absorb what they're told to look for.</p>
+          <ol style="margin:0;padding-left:18px;">
+            <li style="font-size:13px;color:var(--body);line-height:1.6;margin-bottom:4px;"><strong>Tell</strong> — frame the problem and set the expectation before showing anything</li>
+            <li style="font-size:13px;color:var(--body);line-height:1.6;margin-bottom:4px;"><strong>Show</strong> — demonstrate the solution in the customer's specific context</li>
+            <li style="font-size:13px;color:var(--body);line-height:1.6;"><strong>Tell</strong> — reinforce what they just saw and connect it back to the stated problem</li>
+          </ol>
+          <p style="font-size:12px;color:var(--muted);margin:12px 0 0;">Further reading: <a href="https://www.storylane.io/blog/tell-show-tell-demo" target="_blank" rel="noopener" style="color:var(--sf-blue);">Storylane — Tell Show Tell</a> · <a href="https://www.demostack.com/glossary/tell-show-tell" target="_blank" rel="noopener" style="color:var(--sf-blue);">Demostack Glossary</a></p>
+        </div>
+        <div class="workflow-card">
+          <h3>Bowden Persuasion Blueprint</h3>
+          <p style="font-size:13px;color:var(--body);line-height:1.6;margin:0 0 12px;">Michelle Bowden's framework — used by Salesforce teams globally — structures every presentation around audience analysis, message design, and deliberate delivery. Her <em>Persuasive Presentation Skills Masterclass</em> is the most widely attended program of its kind in Australia.</p>
+          <p style="font-size:13px;color:var(--body);line-height:1.6;margin:0 0 12px;">Key principle: your opening must establish the <em>cost of doing nothing</em> before you show the solution. Decktools enforces this in the Why Now and Gap sections.</p>
+          <p style="font-size:12px;color:var(--muted);margin:0;">Official course: <a href="https://michellebowden.com.au/presentation-skills-training/" target="_blank" rel="noopener" style="color:var(--sf-blue);">michellebowden.com.au</a> · Book: <em>How to Present</em> (Wiley)</p>
+        </div>
+      </div>
+
+      <div style="padding:20px 24px;border-radius:12px;background:var(--off-white);border:1px solid var(--gray-200);">
+        <p style="font-size:13px;color:var(--body);line-height:1.6;margin:0;"><strong style="color:var(--sf-navy);">How it maps to your deck:</strong> the Why Now slide is your first Tell — it frames the urgency. The Gap slide deepens the tension. Your product demo or use case slides are the Show. Proof and Roadmap are your closing Tell — evidence that the solution delivers, and a path forward the customer can own.</p>
+      </div>
+    </div>
+
+    <!-- CLOSING -->
+    <div class="closing-band">
+      <h2>See what's possible before you build</h2>
+      <p>After installing, open these files locally in Chrome to see the full output quality — animations, components, and copy style — before you generate your own deck.</p>
+      <div style="display:flex;flex-direction:column;gap:10px;margin:0 0 28px;text-align:left;">
+        <div style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:10px;padding:14px 18px;display:flex;justify-content:space-between;align-items:center;gap:16px;">
+          <div>
+            <div style="font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:rgba(255,255,255,0.45);margin-bottom:3px;">Canonical example</div>
+            <div style="font-size:13px;font-weight:700;color:#fff;">sf-composer.html</div>
+            <div style="font-size:12px;color:rgba(255,255,255,0.55);margin-top:2px;">Full 12-slide customer deck — structure, animations, copy style</div>
+          </div>
+          <button class="code-copy" style="flex-shrink:0;" onclick="copyCode(this, 'open ~/claude/decktools/sf-composer.html')">COPY</button>
+        </div>
+        <div style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:10px;padding:14px 18px;display:flex;justify-content:space-between;align-items:center;gap:16px;">
+          <div>
+            <div style="font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:rgba(255,255,255,0.45);margin-bottom:3px;">Component library</div>
+            <div style="font-size:13px;font-weight:700;color:#fff;">style-guide-example.html</div>
+            <div style="font-size:12px;color:rgba(255,255,255,0.55);margin-top:2px;">Every token, card, stat, chip, and colour variant rendered live</div>
+          </div>
+          <button class="code-copy" style="flex-shrink:0;" onclick="copyCode(this, 'open ~/claude/decktools/style-guide-example.html')">COPY</button>
+        </div>
+        <div style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:10px;padding:14px 18px;display:flex;justify-content:space-between;align-items:center;gap:16px;">
+          <div>
+            <div style="font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:rgba(255,255,255,0.45);margin-bottom:3px;">Animations</div>
+            <div style="font-size:13px;font-weight:700;color:#fff;">animation-demo.html</div>
+            <div style="font-size:12px;color:rgba(255,255,255,0.55);margin-top:2px;">All 8 interactive animation patterns with live controls</div>
+          </div>
+          <button class="code-copy" style="flex-shrink:0;" onclick="copyCode(this, 'open ~/claude/decktools/animation-demo.html')">COPY</button>
+        </div>
+      </div>
+      <div class="closing-steps">
+        <div class="c-step primary">
+          <div class="cs-num">Step 1</div>
+          <div class="cs-text">Install the skill</div>
+        </div>
+        <div class="c-step">
+          <div class="cs-num">Step 2</div>
+          <div class="cs-text">Browse the examples</div>
+        </div>
+        <div class="c-step">
+          <div class="cs-num">Step 3</div>
+          <div class="cs-text">Run /decktools new</div>
+        </div>
+        <div class="c-step">
+          <div class="cs-num">Step 4</div>
+          <div class="cs-text">Open your deck in Chrome</div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /page-wrap -->
+
+  <div style="text-align:center;padding:32px 40px;font-size:12px;color:var(--muted);border-top:1px solid var(--gray-200);margin-top:0;">
+    Built by <a href="https://www.linkedin.com/in/milestoolin/" target="_blank" rel="noopener" style="color:var(--sf-blue);text-decoration:none;font-weight:600;">Miles Toolin</a> with <a href="https://claude.ai/code" target="_blank" rel="noopener" style="color:var(--sf-blue);text-decoration:none;font-weight:600;">Claude Code</a>
+  </div>
+
+  <!-- Lead capture modal -->
+  <div id="lc-backdrop" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:10000;align-items:center;justify-content:center;">
+    <div style="background:#fff;border-radius:16px;padding:36px 32px 28px;max-width:420px;width:90%;box-shadow:0 24px 64px rgba(0,0,0,0.22);position:relative;">
+      <div style="font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#066AFE;margin-bottom:8px;">Welcome</div>
+      <h2 style="font-size:20px;font-weight:700;color:#001E5B;margin:0 0 6px;letter-spacing:-0.02em;">Before you install</h2>
+      <p style="font-size:13px;color:#6B7280;line-height:1.6;margin:0 0 22px;">Let Miles know who's using Decktools — takes 20 seconds.</p>
+      <div style="display:flex;flex-direction:column;gap:12px;">
+        <input id="lc-name"  type="text"  placeholder="Your name"           maxlength="80"  style="padding:10px 14px;border:1.5px solid #E5E7EB;border-radius:8px;font-size:14px;font-family:inherit;outline:none;width:100%;box-sizing:border-box;" onfocus="this.style.borderColor='#066AFE'" onblur="this.style.borderColor='#E5E7EB'"/>
+        <input id="lc-email" type="email" placeholder="Work email"          maxlength="120" style="padding:10px 14px;border:1.5px solid #E5E7EB;border-radius:8px;font-size:14px;font-family:inherit;outline:none;width:100%;box-sizing:border-box;" onfocus="this.style.borderColor='#066AFE'" onblur="this.style.borderColor='#E5E7EB'"/>
+        <input id="lc-role"  type="text"  placeholder="Role (e.g. Account Executive)" maxlength="80" style="padding:10px 14px;border:1.5px solid #E5E7EB;border-radius:8px;font-size:14px;font-family:inherit;outline:none;width:100%;box-sizing:border-box;" onfocus="this.style.borderColor='#066AFE'" onblur="this.style.borderColor='#E5E7EB'"/>
+      </div>
+      <button id="lc-submit" style="margin-top:18px;width:100%;padding:12px;background:#022AC0;color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;transition:background 0.15s;" onmouseover="this.style.background='#066AFE'" onmouseout="this.style.background='#022AC0'">Let's go →</button>
+    </div>
+  </div>
+
+  <script>
+    const TRACKER = 'https://decktools-tracker.mtoolin.workers.dev/track';
+
+    function ping(payload) {
+      payload.ts = new Date().toISOString();
+      fetch(TRACKER, { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(payload), keepalive:true }).catch(()=>{});
+    }
+
+    function copyCode(btn, text) {
+      navigator.clipboard.writeText(text).then(() => {
+        const orig = btn.textContent;
+        btn.textContent = 'COPIED';
+        setTimeout(() => { btn.textContent = orig; }, 1800);
+      });
+    }
+
+    // ── Lead capture + page_visit ────────────────────────────────
+    (function() {
+      const ref = new URLSearchParams(location.search).get('ref') || 'direct';
+      ping({ event: 'page_visit', ref });
+
+      // Show modal once per browser (not per session)
+      if (localStorage.getItem('dt_lead_done')) return;
+
+      const backdrop = document.getElementById('lc-backdrop');
+      backdrop.style.display = 'flex';
+
+      function submit() {
+        const name  = document.getElementById('lc-name').value.trim();
+        const email = document.getElementById('lc-email').value.trim();
+        const role  = document.getElementById('lc-role').value.trim();
+        if (!name || !email) {
+          if (!name) document.getElementById('lc-name').style.borderColor = '#B60554';
+          if (!email) document.getElementById('lc-email').style.borderColor = '#B60554';
+          return;
+        }
+        ping({ event: 'lead_capture', name, email, role, ref });
+        localStorage.setItem('dt_lead_done', '1');
+        backdrop.style.display = 'none';
+      }
+
+      document.getElementById('lc-submit').addEventListener('click', submit);
+      document.addEventListener('keydown', e => { if (e.key === 'Enter') submit(); });
+    })();
+  </script>
+
+</body>
+</html>
